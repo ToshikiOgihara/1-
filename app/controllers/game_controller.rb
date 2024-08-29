@@ -5,9 +5,8 @@ class GameController < ApplicationController
   
   def test
     tileAll = Tile.all()
-    @rest_tiles = tileAll.sample(14 + 10)
+    @rest_tiles = tileAll.sample(14 + 30)
     
-    #binding.pry()
     # sliceメソッドのびっくりマーク。
     #haipai = @rest_tiles.slice!(0..13)
     if Rails.cache.exist?('discard_tiles')
@@ -25,11 +24,47 @@ class GameController < ApplicationController
     else
       @discard_tiles = Array.new()
     end
-    
     #binding.pry()
   end
   
+  # 牌の種類をデータベースに登録。
+  # キーワードajax(非同期通信) rails jsファイル
   def discard
+    @hand_tiles = Rails.cache.read('hand_tiles')
+    @rest_tiles = Rails.cache.read('rest_tiles')
+    @discard_tiles = Array.new()
+    @next_tile = @rest_tiles.slice!(0)
+    
+    #binding.pry()
+    if @next_tile.nil?
+      @next_tile = Tile.find(params[:last_tile_id])
+      @discard_tiles = Rails.cache.read('discard_tiles')
+      
+      flash.now[:danger] = "まけ"
+    else
+      @select_tile = Tile.find(params[:tile_id])
+      if @hand_tiles.include?(@select_tile)
+        @hand_tiles.delete(@select_tile)
+        @hand_tiles.append(Tile.find(params[:last_tile_id]))
+      end
+      
+      if Rails.cache.exist?('discard_tiles')
+        @discard_tiles = Rails.cache.read('discard_tiles')
+      end
+      @discard_tiles.append(@select_tile)
+      #binding.pry()
+      
+      Rails.cache.write('hand_tiles', @hand_tiles)
+      Rails.cache.write('rest_tiles', @rest_tiles)
+      Rails.cache.write('discard_tiles', @discard_tiles)
+    end
+    render :test
+    
+    #@discard_tiles = []
+    #@discard_tiles.push(selecttile)
+    # 捨て牌を格納する配列に追加。
+    # 手牌から選んだ牌を削除。
+    # 
   end
   
   def result

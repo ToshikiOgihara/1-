@@ -2,7 +2,18 @@
 <p>Find me in app/views/pages/game/test.html.erb</p>
 
 <div>
-  <% @ripai.each do |pai| %>
-    <%= image_tag "MahjongPai/p_#{pai}_0.gif", class:"#" %>
-  <% end %>
+  <div class="hand-area bg-warning bg-opacity-25">
+    <div>
+      <h3>手牌エリア</h3>
+    </div>
+    <% @hand_tiles = ripai(@hand_tiles) %>
+    <% @hand_tiles.each_with_index do |pai, i| %>
+      <%#= p "インデックス:#{i}, 値:#{pai}" %>
+      <%= link_to image_tag("MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif"), game_path(tile_id: pai.id, last_tile_id: @next_tile.id), id: "hand_tiles" + pai.id.to_s, method: :post, remote: false %>
+    <% end %>
+    　<%= link_to image_tag("MahjongPai/p_#{@next_tile.suit + @next_tile.value.to_s}_0.gif"), game_path(tile_id: @next_tile.id, last_tile_id: @next_tile.id), id: "hand_tiles" + @next_tile.id.to_s, method: :post, remote: false %>
+  </div>
 </div>
+<%#= javascript_include_tag "game.js" %>
+
+<%= link_to "和了", game_result_path, class: 'btn btn-primary', method: :post, remote: false %>

@@ -8,5 +8,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "pages#index"
   
-  get 'game/test'
+  get 'game', action: :test, controller: 'game'
+  post 'game', action: :discard, controller: 'game'
+  
+  get 'game/result'
+  post 'game/result', action: :tsumo, controller: 'game'
 end

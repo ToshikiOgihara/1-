@@ -42,4 +42,4 @@
 </div>
 <%#= javascript_include_tag "game.js" %>
 
-<%= link_to "和了", game_result_path, class: 'btn btn-primary', data: { turbo_method: :post }, remote: false %>
+<%= button_to "和了", game_result_path(hand: @hand_tiles.append(@next_tile)), method: :post, class: 'btn btn-primary', data: { turbo: false } %>

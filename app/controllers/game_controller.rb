@@ -62,13 +62,14 @@ class GameController < ApplicationController
   end
   
   def result
-    binding.pry()
+    
   end
   
   def tsumo
+    hand_tiles = params[:hand]
     binding.pry()
-    @foo = 1
-    render :result
+    redirect_to '/game/result'
+    #render :result
     # 牌順から1つ減らす。
     # @current_total_paijun
     # 牌順から1つ取り出した牌は手牌の一番右に表示する。

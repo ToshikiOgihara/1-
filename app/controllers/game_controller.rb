@@ -40,7 +40,7 @@ class GameController < ApplicationController
       @next_tile = Tile.find(params[:last_tile_id])
       @discard_tiles = Rails.cache.read('discard_tiles')
       
-      flash.now[:danger] = "まけ"
+      flash.now[:danger] = "残りツモ回数がありません。あなたの負けです。"
     else
       @select_tile = Tile.find(params[:tile_id])
       if @hand_tiles.include?(@select_tile)
@@ -59,18 +59,14 @@ class GameController < ApplicationController
       Rails.cache.write('discard_tiles', @discard_tiles)
     end
     render :test
-    
-    #@discard_tiles = []
-    #@discard_tiles.push(selecttile)
-    # 捨て牌を格納する配列に追加。
-    # 手牌から選んだ牌を削除。
-    # 
   end
   
   def result
+    binding.pry()
   end
   
   def tsumo
+    binding.pry()
     @foo = 1
     render :result
     # 牌順から1つ減らす。

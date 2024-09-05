@@ -9,8 +9,18 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
+  
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>" role="alert"><%= value %></div>
+  <% end %>
 
   <body>
     <%= yield %>
   </body>
+  
+  <script>
+    $(function(){
+      $(".alert").fadeOut(5000);
+    });
+  </script>
 </html>

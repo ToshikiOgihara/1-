@@ -66,12 +66,49 @@ class GameController < ApplicationController
   end
   
   def tsumo
-    hand_tiles = params[:hand]
-    binding.pry()
-    redirect_to '/game/result'
+    hand_tiles = Tile.find(params[:hand]).sort()
+    if canWin(hand_tiles)
+      redirect_to '/game/result', success: '和了判定'
+    else
+      redirect_to '/game/result', danger: 'チョンボ判定'
+    end
+    
     #render :result
     # 牌順から1つ減らす。
     # @current_total_paijun
     # 牌順から1つ取り出した牌は手牌の一番右に表示する。
+  end
+  
+  def canWin(hand_tiles)
+    # 手牌から雀頭候補リストを作成。
+    # 雀頭を取り除き、面子候補を割り出す。
+    
+    hand_tiles_array = hand_tiles.map{ |tile| tile.value.to_s + tile.suit }
+    pair_list = hand_tiles_array.filter{ |tile| hand_tiles_array.count(tile) > 1}.uniq
+    
+    pair_list.each do |pair_tile|
+      # 雀頭を除いた手牌。
+      tile_group = hand_tiles_array.clone
+      tile_group[hand_tiles_array.index(pair_tile), 2] = []
+      if isAllGroup(tile_group)
+        return true
+      end
+    end
+    
+    
+    return false
+    # 和了ロジック
+    # 1. 雀頭候補を割り出す。(oair)
+    # 2. 刻子候補を割り出す。(triplets)
+    # 3. 順子を割り出す。(sequences)
+    
+    # Tips 順子は一番多くなるため最後。
+  end
+  
+  def isAllGroup(tile_group)
+    # 刻子(同じ牌が3枚)リスト。
+    triplets_list = tile_group.filter{ |tile| tile_group.count(tile) > 2}.uniq
+    
+    
   end
 end

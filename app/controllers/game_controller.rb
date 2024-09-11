@@ -72,13 +72,9 @@ class GameController < ApplicationController
     else
       redirect_to '/game/result', danger: 'チョンボ判定'
     end
-    
-    #render :result
-    # 牌順から1つ減らす。
-    # @current_total_paijun
-    # 牌順から1つ取り出した牌は手牌の一番右に表示する。
   end
   
+  private
   def canWin(hand_tiles)
     # 手牌から雀頭候補リストを作成。
     # 雀頭を取り除き、面子候補を割り出す。
@@ -95,7 +91,6 @@ class GameController < ApplicationController
       end
     end
     
-    
     return false
     # 和了ロジック
     # 1. 雀頭候補を割り出す。(oair)
@@ -108,7 +103,31 @@ class GameController < ApplicationController
   def isAllGroup(tile_group)
     # 刻子(同じ牌が3枚)リスト。
     triplets_list = tile_group.filter{ |tile| tile_group.count(tile) > 2}.uniq
+    triplets_all_subset = [[]]
     
+    # 刻子の和集合作成。
+    triplets_list.each do |triplets|
+      triplets_all_subset_copy = triplets_all_subset.clone()
+      triplets_all_subset_copy.each do |triplets_subset|
+        triplets_all_subset.append [triplets].concat(triplets_subset)
+      end
+    end
+    
+    triplets_all_subset.each do |triplets_subset|
+      tile_group_copy = tile_group.clone()
+      
+      # 刻子を取り除く。
+      triplets_subset.each do |triplets|
+        if tile_group_copy.include?(triplets)
+           tile_group_copy[tile_group_copy.index(triplets), 3] = []
+        end
+      end
+      
+      # 順子を取り除く。
+      #p tile_group
+      #binding.pry()
+    end
+    return false
     
   end
 end

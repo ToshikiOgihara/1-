@@ -78,10 +78,13 @@ class GameController < ApplicationController
   def canWin(hand_tiles)
     # 手牌から雀頭候補リストを作成。
     # 雀頭を取り除き、面子候補を割り出す。
-    
     hand_tiles_array = hand_tiles.map{ |tile| tile.value.to_s + tile.suit }
     pair_list = hand_tiles_array.filter{ |tile| hand_tiles_array.count(tile) > 1}.uniq
     
+    # 和了ロジック
+    # 1. 雀頭候補を割り出す。(oair)
+    # 2. 刻子候補を割り出す。(triplets)
+    # 3. 順子を割り出す。(sequences)
     pair_list.each do |pair_tile|
       # 雀頭を除いた手牌。
       tile_group = hand_tiles_array.clone
@@ -92,12 +95,6 @@ class GameController < ApplicationController
     end
     
     return false
-    # 和了ロジック
-    # 1. 雀頭候補を割り出す。(oair)
-    # 2. 刻子候補を割り出す。(triplets)
-    # 3. 順子を割り出す。(sequences)
-    
-    # Tips 順子は一番多くなるため最後。
   end
   
   def isAllGroup(tile_group)
@@ -105,7 +102,7 @@ class GameController < ApplicationController
     triplets_list = tile_group.filter{ |tile| tile_group.count(tile) > 2}.uniq
     triplets_all_subset = [[]]
     
-    # 刻子の和集合作成。
+    # 刻子の和集合作成(刻子がない場合でも作成)。
     triplets_list.each do |triplets|
       triplets_all_subset_copy = triplets_all_subset.clone()
       triplets_all_subset_copy.each do |triplets_subset|
@@ -119,15 +116,40 @@ class GameController < ApplicationController
       # 刻子を取り除く。
       triplets_subset.each do |triplets|
         if tile_group_copy.include?(triplets)
-           tile_group_copy[tile_group_copy.index(triplets), 3] = []
+          tile_group_copy[tile_group_copy.index(triplets), 3] = []
         end
       end
       
       # 順子を取り除く。
-      #p tile_group
-      #binding.pry()
+      while tile_group_copy.length > 0 do
+        first_tile = tile_group_copy.first
+        
+        # 字牌は刻子のみ成り立つ。
+        if first_tile.include?("z")
+          break
+        end
+        
+        next_sequences_tile = (first_tile[0].to_i + 1).to_s + first_tile[1]
+        if !tile_group_copy.include?(next_sequences_tile)
+          break
+        end
+        
+        next_after_sequences_tile = (next_sequences_tile[0].to_i + 1).to_s + first_tile[1]
+        if !tile_group_copy.include?(next_after_sequences_tile)
+          break
+        end
+        
+        tile_group_copy.delete_at tile_group_copy.index(first_tile)
+        tile_group_copy.delete_at tile_group_copy.index(next_sequences_tile)
+        tile_group_copy.delete_at tile_group_copy.index(next_after_sequences_tile)
+      end
+      
+      # 4面子揃っている。
+      if tile_group_copy.length == 0
+        return true
+      end
     end
-    return false
     
+    return false
   end
 end

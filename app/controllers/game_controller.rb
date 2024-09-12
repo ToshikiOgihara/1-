@@ -81,10 +81,15 @@ class GameController < ApplicationController
     hand_tiles_array = hand_tiles.map{ |tile| tile.value.to_s + tile.suit }
     pair_list = hand_tiles_array.filter{ |tile| hand_tiles_array.count(tile) > 1}.uniq
     
-    # 和了ロジック
+    # 七対子(seven pairs)判定。
+    if pair_list.length == 7
+      return true
+    end
+    
+    # 4面子1雀頭判定ロジック
     # 1. 雀頭候補を割り出す。(oair)
     # 2. 刻子候補を割り出す。(triplets)
-    # 3. 順子を割り出す。(sequences)
+    # 3. 順子候補を割り出す。(sequences)
     pair_list.each do |pair_tile|
       # 雀頭を除いた手牌。
       tile_group = hand_tiles_array.clone
@@ -120,7 +125,7 @@ class GameController < ApplicationController
         end
       end
       
-      # 順子を取り除く。
+      # 順子の組み合わせ。
       while tile_group_copy.length > 0 do
         first_tile = tile_group_copy.first
         
@@ -139,6 +144,7 @@ class GameController < ApplicationController
           break
         end
         
+        # 順子を取り除く。
         tile_group_copy.delete_at tile_group_copy.index(first_tile)
         tile_group_copy.delete_at tile_group_copy.index(next_sequences_tile)
         tile_group_copy.delete_at tile_group_copy.index(next_after_sequences_tile)

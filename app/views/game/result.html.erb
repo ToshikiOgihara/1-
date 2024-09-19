@@ -1,18 +1,4 @@
-<h1>game#tsumo</h1>
-<p>Find me in app/views/game/result.html.erb</p>
-
-<div class="Todo">
-  <h3>ツモボタンを押した後にやること</h3>
-  <ul>
-    <li>手牌関係
-      <ul>
-        <li>4面子1雀頭の場合、和了関係のメッセージを表示。</li>
-        <li>上記以外の場合、チョンボのメッセージを表示。</li>
-        <li>メッセージはその時に考える。</li>
-      </ul>
-    </li>
-    <li>「もう一度遊ぶ」ボタンを表示。</li>
-    <li>「トップページに戻る」ボタンを表示。</li>
-  </ul>
-  <%= "インスタンス変数テスト:" + @foo.to_s %>
+<div>
+  <%= link_to "もう一度遊ぶ", game_path, class: 'btn btn-primary' %>
+  <%= link_to "トップページに戻る", root_path, class: 'btn btn-primary' %>
 </div>

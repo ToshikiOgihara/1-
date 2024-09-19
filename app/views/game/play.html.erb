@@ -1,0 +1,38 @@
+<h1></h1>
+<div>
+  <div>
+    <p>残りツモ回数
+      <b class='color-red'><%= @rest_tiles.size %></b>
+    </p>
+  </div>
+  
+  <div class="bg-info bg-opacity-25" id="discard-area">
+    <div>
+      <h3>捨て牌エリア</h3>
+    </div>
+    <% @discard_tiles.each_with_index do |pai, i| %>
+      <% if i % 6 == 0 && i != 0 %>
+        <br>
+      <% end %>
+      <%= image_tag "MahjongPai/p_#{pai.suit + pai.value.to_s}_1.gif", id: "discard" + pai.id.to_s %>
+    <% end %>
+  </div>
+  
+  <div class="hand-area bg-warning bg-opacity-25">
+    <div>
+      <h3>手牌エリア</h3>
+    </div>
+    <% @hand_tiles = ripai(@hand_tiles) %>
+    <% @hand_tiles.each_with_index do |pai, i| %>
+      <%= form_with url: game_play_path(tile_id: pai.id, last_tile_id: @next_tile.id), method: :post, local: true do |form| %>
+        <%= link_to image_tag("MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif"), '#', onclick: 'this.closest("form").submit(); return false;', id: "hand_tiles" + pai.id.to_s %>
+      <% end %>
+    <% end %>
+    　<%= form_with url: game_play_path(tile_id: @next_tile.id, last_tile_id: @next_tile.id), method: :post, local: true do |form| %>
+        <%= link_to image_tag("MahjongPai/p_#{@next_tile.suit + @next_tile.value.to_s}_0.gif"), '#', onclick: 'this.closest("form").submit(); return false;', id: "hand_tiles" + @next_tile.id.to_s %>
+      <% end %>
+  </div>
+</div>
+<%#= javascript_include_tag "game.js" %>
+
+<%= button_to "和了", game_result_path(hand: @hand_tiles.append(@next_tile)), method: :post, class: 'btn btn-primary', data: { turbo: false } %>

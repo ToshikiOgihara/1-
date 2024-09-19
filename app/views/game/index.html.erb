@@ -1,0 +1,6 @@
+<h1>難易度を選んでください</h1>
+<div>
+  <%= link_to "やさしい", game_play_path(mode_select: "easy"), class: 'btn btn-primary' %>
+  <%= link_to "ふつう", game_play_path(mode_select: "normal"), class: 'btn btn-primary' %>
+  <%= link_to "むずかしい", game_play_path(mode_select: "hard"), class: 'btn btn-primary' %>
+</div>

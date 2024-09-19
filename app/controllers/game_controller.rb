@@ -5,15 +5,19 @@ class GameController < ApplicationController
   
   def play
     tileAll = Tile.all()
-    @rest_tiles = tileAll.sample(14 + 30)
     
-    # sliceメソッドのびっくりマーク。
-    #haipai = @rest_tiles.slice!(0..13)
+    mode_select = params[:mode_select]
+    init_hands = get_init_hands(mode_select)
+    
+    @rest_tiles = tileAll.sample(init_hands + 30)
+    
     if Rails.cache.exist?('discard_tiles')
       Rails.cache.clear('discard_tiles')
     end
     
-    @hand_tiles = @rest_tiles.slice!(0..12)
+    # sliceメソッドのびっくりマーク。
+    #haipai = @rest_tiles.slice!(0..13)
+    @hand_tiles = @rest_tiles.slice!(0..(init_hands - 2))
     @next_tile = @rest_tiles.slice!(0)
     
     Rails.cache.write('hand_tiles', @hand_tiles)
@@ -67,13 +71,24 @@ class GameController < ApplicationController
   def tsumo
     hand_tiles = Tile.find(params[:hand]).sort()
     if canWin(hand_tiles)
-      redirect_to '/game/result', success: '和了判定'
+      redirect_to '/game/result', success: 'ツモ上がりです！'
     else
-      redirect_to '/game/result', danger: 'チョンボ判定'
+      redirect_to '/game/result', danger: 'チョンボとなります！'
     end
   end
   
   private
+  def get_init_hands(mode_text)
+    case mode_text
+    when 'easy' then
+      return 8
+    when 'normal' then
+      return 11
+    when 'hard' then
+      return 14
+    end
+  end
+  
   def canWin(hand_tiles)
     # 手牌から雀頭候補リストを作成。
     # 雀頭を取り除き、面子候補を割り出す。

@@ -24,18 +24,11 @@
     </div>
     <% @hand_tiles = ripai(@hand_tiles) %>
     <% @hand_tiles.each_with_index do |pai, i| %>
-      <%#= p "インデックス:#{i}, 値:#{pai}" %>
-      <%#= link_to image_tag("MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif"), game_path(tile_id: pai.id, last_tile_id: @next_tile.id), id: "hand_tiles" + pai.id.to_s, data: { turbo_method: :post }, remote: false %>
-      <%#= link_to image_tag("MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif"), game_path(tile_id: pai.id, last_tile_id: @next_tile.id), id: "hand_tiles" + pai.id.to_s, data: { turbo_method: :post, turbo: false } %>
-      
-      <%= form_with url: game_path(tile_id: pai.id, last_tile_id: @next_tile.id), method: :post, local: true do |form| %>
+      <%= form_with url: game_play_path(tile_id: pai.id, last_tile_id: @next_tile.id), method: :post, local: true do |form| %>
         <%= link_to image_tag("MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif"), '#', onclick: 'this.closest("form").submit(); return false;', id: "hand_tiles" + pai.id.to_s %>
       <% end %>
     <% end %>
-      <%#= link_to image_tag("MahjongPai/p_#{@next_tile.suit + @next_tile.value.to_s}_0.gif"), game_path(tile_id: @next_tile.id, last_tile_id: @next_tile.id), id: "hand_tiles" + @next_tile.id.to_s, data: { turbo_method: :post }, remote: false %>
-    　<%#= link_to image_tag("MahjongPai/p_#{@next_tile.suit + @next_tile.value.to_s}_0.gif"), game_path(tile_id: @next_tile.id, last_tile_id: @next_tile.id), id: "hand_tiles" + @next_tile.id.to_s, data: { turbo_method: :post, turbo: false } %>
-    　
-    　<%= form_with url: game_path(tile_id: @next_tile.id, last_tile_id: @next_tile.id), method: :post, local: true do |form| %>
+      <%= form_with url: game_play_path(tile_id: @next_tile.id, last_tile_id: @next_tile.id), method: :post, local: true do |form| %>
         <%= link_to image_tag("MahjongPai/p_#{@next_tile.suit + @next_tile.value.to_s}_0.gif"), '#', onclick: 'this.closest("form").submit(); return false;', id: "hand_tiles" + @next_tile.id.to_s %>
       <% end %>
   </div>

@@ -1,9 +1,9 @@
 class GameController < ApplicationController
   def index
-    #@paijun = majon_pais.sample(majon_pais.size)
+    
   end
   
-  def test
+  def play
     tileAll = Tile.all()
     @rest_tiles = tileAll.sample(14 + 30)
     
@@ -58,11 +58,10 @@ class GameController < ApplicationController
       Rails.cache.write('rest_tiles', @rest_tiles)
       Rails.cache.write('discard_tiles', @discard_tiles)
     end
-    render :test
+    render :play
   end
   
   def result
-    
   end
   
   def tsumo

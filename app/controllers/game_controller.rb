@@ -4,6 +4,9 @@ class GameController < ApplicationController
   end
   
   def play
+    if !Tile.all().exists?
+      create_mahjong_tile
+    end
     tileAll = Tile.all()
     
     mode_select = params[:mode_select]
@@ -78,6 +81,22 @@ class GameController < ApplicationController
   end
   
   private
+  def create_mahjong_tile
+    ['m', 'p', 's', 'z'].each do |suit_num|
+      for suit_value in 1..9 do
+        loop_count = 0
+        while loop_count < 4
+          if suit_num != 'z'
+            Tile.create(suit: suit_num, value: suit_value)
+          elsif suit_value < 8
+            Tile.create(suit: suit_num, value: suit_value)
+          end
+          loop_count += 1
+        end
+      end
+    end
+  end
+  
   def get_init_hands(mode_text)
     case mode_text
     when 'easy' then

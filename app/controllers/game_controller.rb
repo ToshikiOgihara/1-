@@ -18,8 +18,6 @@ class GameController < ApplicationController
       Rails.cache.clear('discard_tiles')
     end
     
-    # sliceメソッドのびっくりマーク。
-    #haipai = @rest_tiles.slice!(0..13)
     @hand_tiles = @rest_tiles.slice!(0..(init_hands - 2))
     @next_tile = @rest_tiles.slice!(0)
     

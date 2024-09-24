@@ -78,3 +78,6 @@ gem 'jquery-rails'
 gem 'bcrypt'
 
 gem 'carrierwave'
+
+# puma > 5.0 の場合、デーモン化は廃止されているため代替手段。
+gem 'puma-daemon', require: false

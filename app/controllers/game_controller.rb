@@ -79,6 +79,12 @@ class GameController < ApplicationController
   end
   
   def ajax
+    if !Tile.all().exists?
+      create_mahjong_tile
+    end
+    tileAll = Tile.all()
+    
+    @rest_tiles = tileAll.sample(14 + 30)
   end
   
   private

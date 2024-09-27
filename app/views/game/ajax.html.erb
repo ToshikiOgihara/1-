@@ -1,1 +1,15 @@
 <h1>game#ajax</h1>
+
+<div>
+  <div>
+    <h3>捨て牌エリア</h3>
+  </div>
+  <%= image_tag "MahjongPai/p_#{@rest_tiles[0].suit + @rest_tiles[0].value.to_s}_1.gif" %>
+</div>
+
+<div>
+  <div>
+    <h3>手牌エリア</h3>
+  </div>
+  <%= image_tag "MahjongPai/p_#{@rest_tiles[0].suit + @rest_tiles[0].value.to_s}_0.gif" %>
+</div>

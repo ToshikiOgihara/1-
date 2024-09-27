@@ -78,6 +78,9 @@ class GameController < ApplicationController
     end
   end
   
+  def ajax
+  end
+  
   private
   def create_mahjong_tile
     ['m', 'p', 's', 'z'].each do |suit_num|

@@ -5,8 +5,14 @@
   </div>
   
   <%#= idはデータベースのユニークIDをセット。%>
-  <% @rest_tiles.each_with_index do |pai| %>
-    <%= image_tag "MahjongPai/p_bk_1.gif", id: pai.id %>
+  <% @rest_tiles.each_with_index do |pai, i| %>
+    <% if i % 10 == 0 %>
+      <ul>
+    <% end %>
+      <li class="mahjong-tile" style="list-style: none; display: inline-block;"><%= image_tag "MahjongPai/p_bk_1.gif", id: pai.id %></li>
+    <% if i % 10 == 9 %>
+      </ul>
+    <% end %>
   <% end %>
 </div>
 

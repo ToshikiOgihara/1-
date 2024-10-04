@@ -28,7 +28,7 @@
     <h3>手牌エリア</h3>
   </div>
   <% @hand_tiles.each_with_index do |pai| %>
-    <%= image_tag "MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif", id: pai.id %>
+    <%= image_tag "MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif", id: pai.id, class: "mahjong-tile hand-tile" %>
   <% end %>
 </div>
 <%= javascript_import_module_tag "mahjong" %>

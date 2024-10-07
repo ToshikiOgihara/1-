@@ -1,0 +1,28 @@
+<h1>javascript動作のゲーム画面</h1>
+<div id="rest-area">
+  <h3>牌山エリア</h3>
+  
+  <%#= idはデータベースのユニークIDをセット。%>
+  <ol class="tile-line">
+    <% @rest_tiles.each_with_index do |pai, i| %>
+      <li>
+        <%= image_tag "MahjongPai/p_bk_1.gif", id: pai.id, data: { imgdraw: image_path("MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif"), imgdiscard: image_path("MahjongPai/p_#{pai.suit + pai.value.to_s}_1.gif") } %>
+      </li>
+    <% end %>
+  </ol>
+</div>
+
+<div id="discard-area">
+  <h3>捨て牌エリア</h3>
+  <ol class="tile-line" id="discard-line"></ol>
+  <%#= image_tag "MahjongPai/p_#{@rest_tiles[0].suit + @rest_tiles[0].value.to_s}_1.gif", id: 1 %>
+</div>
+
+<div id="hand-area">
+  <h3>手牌エリア</h3>
+  
+  <% @hand_tiles.each_with_index do |pai| %>
+    <%= image_tag "MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif", id: pai.id, class: "mahjong-tile hand-tile", data: { img: image_path("MahjongPai/p_#{pai.suit + pai.value.to_s}_1.gif")} %>
+  <% end %>
+</div>
+<%= javascript_import_module_tag "mahjong" %>

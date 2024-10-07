@@ -14,4 +14,6 @@ Rails.application.routes.draw do
   
   get 'game/result', to: 'game#result'
   post 'game/result', to: 'game#tsumo'
+  
+  get 'game/play_renew', to: 'game#play_renew'
 end

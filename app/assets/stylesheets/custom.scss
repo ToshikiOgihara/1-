@@ -5,3 +5,13 @@
   }
   
 }
+
+ol.tile-line {
+  list-style: none;
+  width: 420px;
+  
+  li {
+    display: inline-block;
+    width: 33px;
+  }
+}

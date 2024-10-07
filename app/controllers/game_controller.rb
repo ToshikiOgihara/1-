@@ -78,6 +78,23 @@ class GameController < ApplicationController
     end
   end
   
+  def play_renew
+    if !Tile.all().exists?
+      create_mahjong_tile
+    end
+    tileAll = Tile.all()
+    
+    # 牌山
+    @rest_tiles = tileAll.sample(14 + 30)
+    
+    # 手牌
+    @hand_tiles = @rest_tiles.slice!(0..13)
+    # 捨てる、ツモ → javascript
+    # 
+    
+    # 和了 → ajax
+  end
+  
   private
   def create_mahjong_tile
     ['m', 'p', 's', 'z'].each do |suit_num|

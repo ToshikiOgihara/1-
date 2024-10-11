@@ -3,7 +3,7 @@
   <h3>牌山エリア</h3>
   
   <%#= idはデータベースのユニークIDをセット。%>
-  <ol class="tile-line">
+  <ol class="tile-line" id="rest-line">
     <% @rest_tiles.each_with_index do |pai, i| %>
       <li>
         <%= image_tag "MahjongPai/p_bk_1.gif", id: pai.id, data: { imgdraw: image_path("MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif"), imgdiscard: image_path("MahjongPai/p_#{pai.suit + pai.value.to_s}_1.gif") } %>
@@ -15,14 +15,21 @@
 <div id="discard-area">
   <h3>捨て牌エリア</h3>
   <ol class="tile-line" id="discard-line"></ol>
-  <%#= image_tag "MahjongPai/p_#{@rest_tiles[0].suit + @rest_tiles[0].value.to_s}_1.gif", id: 1 %>
 </div>
 
 <div id="hand-area">
   <h3>手牌エリア</h3>
   
-  <% @hand_tiles.each_with_index do |pai| %>
-    <%= image_tag "MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif", id: pai.id, class: "mahjong-tile hand-tile", data: { img: image_path("MahjongPai/p_#{pai.suit + pai.value.to_s}_1.gif")} %>
-  <% end %>
+  <ol class="tile-line" id="hand-line">
+    <% @hand_tiles = ripai(@hand_tiles) %>
+    <% @hand_tiles.each_with_index do |pai| %>
+      <li>
+        <%= image_tag "MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif", id: pai.id, data: { img: image_path("MahjongPai/p_#{pai.suit + pai.value.to_s}_1.gif")} %>
+      </li>
+    <% end %>
+    <li class="draw-tile">
+      <%= image_tag "MahjongPai/p_#{@draw_tile.suit + @draw_tile.value.to_s}_0.gif", id: @draw_tile.id, data: { img: image_path("MahjongPai/p_#{@draw_tile.suit + @draw_tile.value.to_s}_1.gif")} %>
+    </li>
+  </ol>
 </div>
 <%= javascript_import_module_tag "mahjong" %>

@@ -1,6 +1,6 @@
-const ID_REST_LINE = "rest-line"
-const ID_DISCARD_LINE = "discard-line"
-const ID_HAND_LINE = "hand-line"
+const ID_REST_LINE = "rest-line";
+const ID_DISCARD_LINE = "discard-line";
+const ID_HAND_LINE = "hand-line";
 
 /**
  * 牌山があるか。
@@ -27,25 +27,30 @@ function moveDiscardArea(e){
 }
 
 /**
- * 理牌。
+ * 理牌(手牌を並べ替える)。
  * @param {handAreaElement} handAreaElement - 手牌のコンテナ要素
  */
 function ripai(handAreaElement){
   let handDrawTileElement = handAreaElement.lastElementChild;
   
   // ツモ切りは理牌しない。
-  if (handDrawTileElement.childElementCount === 0){
-    return;
-  }
+  if (handDrawTileElement.childElementCount === 0){ return; }
   
-  // ツモ牌
-  for (let tile of handAreaElement.children){
-    if (tile.childElementCount === 0){
-      tile.insertAdjacentHTML('afterbegin', handDrawTileElement.innerHTML);
-      handDrawTileElement.firstElementChild.remove();
-      break;
+  let elementsArray = Array.from(handAreaElement.getElementsByTagName("img"));
+  elementsArray.sort((a, b) => a.id - b.id);
+  
+  // 手牌の並べ替えのためツモ牌は含めない。
+  for (let i = 0; i < handAreaElement.children.length - 1; i++){
+    if (handAreaElement.children.item(i).childElementCount === 0){
+      handAreaElement.children.item(i).appendChild(elementsArray[i]);
+    }else if(handAreaElement.children.item(i).id !== elementsArray[i].id){
+      handAreaElement.children.item(i).replaceChild(
+        elementsArray[i], 
+        handAreaElement.children.item(i).firstElementChild
+      );
     }
   }
+  
 }
 
 /**
@@ -58,7 +63,7 @@ function drawTile(){
     if (restTiles.children.item(i).childElementCount === 1){
       
       let drawElement = restTiles.children.item(i);
-      let handAreaLastElement = document.querySelector(".draw-tile")
+      let handAreaLastElement = document.querySelector(".draw-tile");
       let handImgElement = document.createElement('img');
       
       handImgElement.id = drawElement.firstElementChild.id;
@@ -73,12 +78,10 @@ function drawTile(){
   }
 }
 
-const handArea = document.getElementById(ID_HAND_LINE)
+const handArea = document.getElementById(ID_HAND_LINE);
 handArea.addEventListener("click", (event) => {
   if (event.target.tagName === "IMG") {
-    if (!hasRestTiles()) {
-      return;
-    }
+    if (!hasRestTiles()) { return; }
     
     moveDiscardArea(event.target);
     ripai(handArea);

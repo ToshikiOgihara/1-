@@ -6,12 +6,28 @@
   
 }
 
-ol.tile-line {
-  list-style: none;
-  width: 420px;
+.tile-line {
+  font-size: 0;
+  width: 380px;
   
   li {
     display: inline-block;
+    list-style: none;
     width: 33px;
+    height: 45px;
+    contain: layout;
+    margin-left: 1px;
   }
+  
+  li.draw-tile {
+    margin-left: 15px;
+  }
+}
+
+#rest-line {
+  height: 150px;
+}
+
+#hand-line {
+  width: 530px;
 }

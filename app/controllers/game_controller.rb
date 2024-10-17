@@ -99,6 +99,12 @@ class GameController < ApplicationController
     # 和了 → ajax
   end
   
+  def renew_ajax
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+  
   private
   def create_mahjong_tile
     ['m', 'p', 's', 'z'].each do |suit_num|

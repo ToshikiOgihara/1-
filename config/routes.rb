@@ -16,4 +16,5 @@ Rails.application.routes.draw do
   post 'game/result', to: 'game#tsumo'
   
   get 'game/play_renew', to: 'game#play_renew'
+  post 'game/renew_ajax', to: 'game#renew_ajax'
 end

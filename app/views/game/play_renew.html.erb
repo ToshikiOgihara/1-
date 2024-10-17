@@ -32,8 +32,8 @@
     </li>
   </ol>
 </div>
-<%# bootstrapのフレームワークを適用するには送信先が必要。 %>>
+<%# bootstrapのフレームワークを適用するには送信先が必要。 %>
 <%#= button_to "和了", game_result_path(hand: @hand_tiles.append(@next_tile)), method: :post, class: 'btn btn-primary', data: { turbo: false } %>
-<%= button_to "和了", class: 'btn btn-primary' %>
+<%= button_to "和了", game_renew_ajax_path(), method: :post, class: 'btn btn-primary', data: { turbo: true } %>
 
 <%= javascript_import_module_tag "mahjong" %>

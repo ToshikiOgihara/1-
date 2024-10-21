@@ -23,6 +23,7 @@ function moveDiscardArea(e){
   
   document.getElementById(ID_DISCARD_LINE).appendChild(addElement);
   addElement.appendChild(imgElement);
+  removeHandTilesid(e);
   e.remove();
 }
 
@@ -71,6 +72,7 @@ function drawTile(){
       handImgElement.setAttribute("data-img", drawElement.firstElementChild.getAttribute("data-imgdiscard"));
       
       handAreaLastElement.appendChild(handImgElement);
+      addHandTilesid(handImgElement);
       drawElement.firstElementChild.remove();
       
       break;
@@ -85,6 +87,29 @@ handArea.addEventListener("click", (event) => {
     
     moveDiscardArea(event.target);
     ripai(handArea);
-    drawTile();
+    setTimeout(drawTile, 500);
   }
 });
+
+/**
+ * 手牌のIDを追加。
+ * @param {HTMLImgElement} e - 麻雀牌の画像要素。
+ */
+function addHandTilesid(e){
+  let tsumoHand = document.getElementById("tsumo-hand");
+  let handArray = tsumoHand.value.split(",");
+  
+  handArray.push(e.id);
+  tsumoHand.value = handArray.toSorted((a, b) => a - b);
+}
+
+/**
+ * 手牌のIDを除く。
+ * @param {HTMLImgElement} e - 麻雀牌の画像要素。
+ */
+function removeHandTilesid(e){
+  let tsumoHand = document.getElementById("tsumo-hand");
+  let handArray = tsumoHand.value.split(",");
+  
+  tsumoHand.value = handArray.toSpliced(handArray.findIndex( (item) => item === e.id), 1);
+}

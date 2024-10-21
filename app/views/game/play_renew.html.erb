@@ -22,7 +22,7 @@
   
   <ol class="tile-line" id="hand-line">
     <% @hand_tiles = ripai(@hand_tiles) %>
-    <% @hand_tiles.each_with_index do |pai| %>
+    <% @hand_tiles.each do |pai| %>
       <li>
         <%= image_tag "MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif", id: pai.id, data: { img: image_path("MahjongPai/p_#{pai.suit + pai.value.to_s}_1.gif")} %>
       </li>
@@ -31,9 +31,11 @@
       <%= image_tag "MahjongPai/p_#{@draw_tile.suit + @draw_tile.value.to_s}_0.gif", id: @draw_tile.id, data: { img: image_path("MahjongPai/p_#{@draw_tile.suit + @draw_tile.value.to_s}_1.gif")} %>
     </li>
   </ol>
+  
+  <%# hiddenフィールドには %>
+  <input type="hidden" id="tsumo-hand" value=<%= @hand_tiles.append(@draw_tile).sort.map { |tile| tile.id }.join(",") %> />
 </div>
-<%# bootstrapのフレームワークを適用するには送信先が必要。 %>
-<%#= button_to "和了", game_result_path(hand: @hand_tiles.append(@next_tile)), method: :post, class: 'btn btn-primary', data: { turbo: false } %>
-<%= button_to "和了", game_renew_ajax_path(), method: :post, class: 'btn btn-primary', data: { turbo: true } %>
+
+<%= button_to "和了", game_renew_ajax_path(hand: []), method: :post, class: 'btn btn-primary', data: { turbo: true } %>
 
 <%= javascript_import_module_tag "mahjong" %>

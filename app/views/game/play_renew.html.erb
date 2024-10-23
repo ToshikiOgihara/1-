@@ -31,11 +31,10 @@
       <%= image_tag "MahjongPai/p_#{@draw_tile.suit + @draw_tile.value.to_s}_0.gif", id: @draw_tile.id, data: { img: image_path("MahjongPai/p_#{@draw_tile.suit + @draw_tile.value.to_s}_1.gif")} %>
     </li>
   </ol>
-  
-  <%# hiddenフィールドには %>
-  <input type="hidden" id="tsumo-hand" value=<%= @hand_tiles.append(@draw_tile).sort.map { |tile| tile.id }.join(",") %> />
 </div>
-
-<%= button_to "和了", game_renew_ajax_path(hand: []), method: :post, class: 'btn btn-primary', data: { turbo: true } %>
+<%= form_with url: game_renew_ajax_path, scope: :tsumo, method: :post, data: { turbo: true } do |form| %>
+  <%= form.hidden_field :hand, value: @hand_tiles.append(@draw_tile).sort.map { |tile| tile.id }.join(",") %>
+  <%= form.button "和了", class: 'btn btn-primary' %>
+<% end %>
 
 <%= javascript_import_module_tag "mahjong" %>

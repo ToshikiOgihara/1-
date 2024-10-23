@@ -80,23 +80,12 @@ function drawTile(){
   }
 }
 
-const handArea = document.getElementById(ID_HAND_LINE);
-handArea.addEventListener("click", (event) => {
-  if (event.target.tagName === "IMG") {
-    if (!hasRestTiles()) { return; }
-    
-    moveDiscardArea(event.target);
-    ripai(handArea);
-    setTimeout(drawTile, 500);
-  }
-});
-
 /**
  * 手牌のIDを追加。
  * @param {HTMLImgElement} e - 麻雀牌の画像要素。
  */
 function addHandTilesid(e){
-  let tsumoHand = document.getElementById("tsumo-hand");
+  let tsumoHand = document.getElementById("tsumo_hand");
   let handArray = tsumoHand.value.split(",");
   
   handArray.push(e.id);
@@ -108,8 +97,19 @@ function addHandTilesid(e){
  * @param {HTMLImgElement} e - 麻雀牌の画像要素。
  */
 function removeHandTilesid(e){
-  let tsumoHand = document.getElementById("tsumo-hand");
+  let tsumoHand = document.getElementById("tsumo_hand");
   let handArray = tsumoHand.value.split(",");
   
   tsumoHand.value = handArray.toSpliced(handArray.findIndex( (item) => item === e.id), 1);
 }
+
+const handArea = document.getElementById(ID_HAND_LINE);
+handArea.addEventListener("click", (event) => {
+  if (event.target.tagName === "IMG") {
+    if (!hasRestTiles()) { return; }
+    
+    moveDiscardArea(event.target);
+    ripai(handArea);
+    setTimeout(drawTile, 500);
+  }
+});

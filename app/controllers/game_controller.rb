@@ -94,12 +94,11 @@ class GameController < ApplicationController
     # 手牌
     @hand_tiles = @rest_tiles.slice!(0..(init_hands - 2))
     @draw_tile = @rest_tiles.slice!(0)
-    # 捨てる、ツモ → javascript
-    
-    # 和了 → ajax
   end
   
   def renew_ajax
+    hand_tiles = Tile.find(params[:tsumo][:hand].split(",")).sort()
+    
     respond_to do |format|
       format.turbo_stream
     end

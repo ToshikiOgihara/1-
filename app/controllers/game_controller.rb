@@ -98,9 +98,24 @@ class GameController < ApplicationController
   
   def renew_ajax
     hand_tiles = Tile.find(params[:tsumo][:hand].split(",")).sort()
+    # p hand_tiles
     
-    respond_to do |format|
-      format.turbo_stream
+    # mode_select = params[:mode_select]
+    # init_hands = get_init_hands(mode_select)
+    init_hands = 14
+    
+    # 牌山
+    @rest_tiles = Tile.all().sample(init_hands + 30)
+    
+    # 手牌
+    @hand_tiles = @rest_tiles.slice!(0..(14 - 2))
+    @draw_tile = @rest_tiles.slice!(0)
+    if canWin(hand_tiles)
+      flash.now[:success] = 'ツモ上がりです！'
+      render :play_renew
+    else
+      flash.now[:danger] = 'チョンボとなります！'
+      render :play_renew
     end
   end
   

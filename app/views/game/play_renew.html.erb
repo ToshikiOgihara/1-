@@ -22,7 +22,7 @@
   
   <ol class="tile-line" id="hand-line">
     <% @hand_tiles = ripai(@hand_tiles) %>
-    <% @hand_tiles.each_with_index do |pai| %>
+    <% @hand_tiles.each do |pai| %>
       <li>
         <%= image_tag "MahjongPai/p_#{pai.suit + pai.value.to_s}_0.gif", id: pai.id, data: { img: image_path("MahjongPai/p_#{pai.suit + pai.value.to_s}_1.gif")} %>
       </li>
@@ -32,4 +32,9 @@
     </li>
   </ol>
 </div>
+<%= form_with url: game_renew_ajax_path, scope: :tsumo, method: :post, data: { turbo: false } do |form| %>
+  <%= form.hidden_field :hand, value: @hand_tiles.append(@draw_tile).sort.map { |tile| tile.id }.join(",") %>
+  <%= form.button "和了", class: 'btn btn-primary' %>
+<% end %>
+
 <%= javascript_import_module_tag "mahjong" %>
